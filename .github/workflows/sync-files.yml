@@ -26,10 +26,7 @@ jobs:
            sed -i "/CONFIG_TARGET_DEVICE_rockchip_.*=.*/d" ./rk35xx/.config
            sed -i "/CONFIG_PACKAGE_dtc.*=.*/d" ./rk35xx/.config
            sed -i "/CONFIG_PACKAGE_luci-app-istorex.*=.*/d" ./rk35xx/.config
-           sed -i "/#\s*CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_jp_tvbox\s*is\s*not\s*set/d" ./rk35xx/.config
-           sed -i "/#\s*CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_panther_x2\s*is\s*not\s*set/d" ./rk35xx/.config
-           sed -i "/#\s*CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_dg_nas\s*is\s*not\s*set/d" ./rk35xx/.config
-           # sed -i "s/CONFIG_PACKAGE_rtl8821ce-firmware=y/CONFIG_PACKAGE_rtl8821ce-firmware=n/" ./rk35xx/.config
+           # 保留cyber3588_aib设备，移除其他设备的配置
            sed -i "s/^\(CONFIG_PACKAGE_rtl[0-9a-z-]*firmware\)=y$/\1=n/" ./rk35xx/.config
            sed -i "s/CONFIG_PACKAGE_kmod-rtw88-oot=y/CONFIG_PACKAGE_kmod-rtw88-oot=n/" ./rk35xx/.config
            sed -i "s/CONFIG_PACKAGE_kmod-rtw89-oot=y/CONFIG_PACKAGE_kmod-rtw89-oot=n/" ./rk35xx/.config
@@ -40,10 +37,6 @@ jobs:
         else
            echo "不处理数据。"
         fi
-
-        mkdir -p ./x86
-        wget -O ./x86/feeds.conf https://fw0.koolcenter.com/iStoreOS-22.03/x86_64_efi/feeds.conf --no-check-certificate
-        wget -O ./x86/.config https://fw0.koolcenter.com/iStoreOS-22.03/x86_64_efi/config.buildinfo --no-check-certificate
 
     - name: 同步配置
       uses: peaceiris/actions-gh-pages@v3

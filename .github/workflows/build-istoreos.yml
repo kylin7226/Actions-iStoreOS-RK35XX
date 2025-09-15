@@ -1,4 +1,4 @@
-name: Build iStore OS
+name: Build iStore OS RK35XX CYBER3588 AIB
 
 on:
   repository_dispatch:
@@ -188,10 +188,10 @@ jobs:
       id: tag
       if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "release_tag=$(date +"%Y.%m.%d-%H.%M")-${{ matrix.ARCHITECTURE }}" >> ${GITHUB_OUTPUT}
+        echo "release_tag=$(date +"%Y.%m.%d-%H.%M")-cyber3588-aib" >> ${GITHUB_OUTPUT}
         touch release.txt
         echo "
-        💻 架构: ${{ matrix.ARCHITECTURE }}
+        💻 架构: RK35XX CYBER3588 AIB
 
         📂 源码: ${{ env.REPO_URL }}
 

@@ -1,86 +1,228 @@
-# iStore OS 固件 | 定制的麻烦自行 fork 修改
+# iStoreOS RK35XX CYBER3588 AIB 固件 | 专为RK3588设备定制
 
-[![iStore使用文档](https://img.shields.io/badge/使用文档-iStore%20OS-brightgreen?style=flat-square)](https://doc.linkease.com/zh/guide/istoreos) [![最新固件下载](https://img.shields.io/github/v/release/xiaomeng9597/Actions-iStoreOS-RK35XX?style=flat-square&label=最新固件下载)](../../releases/latest)
+[![iStore使用文档](https://img.shields.io/badge/使用文档-iStore%20OS-brightgreen?style=flat-square)](https://doc.linkease.com/zh/guide/istoreos) [![最新固件下载](https://img.shields.io/github/v/release/xiaomeng9597/Actions-iStoreOS-RK35XX?style=flat-square&label=最新固件下载)](../../releases/latest) [![编译状态](https://img.shields.io/github/actions/workflow/status/xiaomeng9597/Actions-iStoreOS-RK35XX/build-istoreos.yml?style=flat-square&label=编译状态)](../../actions/workflows/build-istoreos.yml)
 
-![支持设备](https://img.shields.io/badge/支持设备:-blueviolet.svg?style=flat-square) ![H88K](https://img.shields.io/badge/H88K-blue.svg?style=flat-square) ![H66K](https://img.shields.io/badge/H66K-blue.svg?style=flat-square) ![H68K](https://img.shields.io/badge/H68K-blue.svg?style=flat-square) ![H69K](https://img.shields.io/badge/H69K-blue.svg?style=flat-square) ![R5S](https://img.shields.io/badge/R5S-blue.svg?style=flat-square) ![R6S](https://img.shields.io/badge/R6S-blue.svg?style=flat-square) ![R66S](https://img.shields.io/badge/R66S-blue.svg?style=flat-square) ![R68S](https://img.shields.io/badge/R68S-blue.svg?style=flat-square) ![STATION P2](https://img.shields.io/badge/STATION%20P2-blue.svg?style=flat-square) ![T68M](https://img.shields.io/badge/T68M-blue.svg?style=flat-square) ![JIANPIAN TVBOX](https://img.shields.io/badge/JIANPIAN%20TVBOX-blue.svg?style=flat-square) ![PANTHER X2](https://img.shields.io/badge/PANTHER%20X2-blue.svg?style=flat-square) ![DG NAS LITE](https://img.shields.io/badge/DG%20NAS%20LITE-blue.svg?style=flat-square) ![IDO3568 CM4](https://img.shields.io/badge/IDO3568%20CM4-blue.svg?style=flat-square) ![EZPRO Mrkaio M68S](https://img.shields.io/badge/EZPRO%20Mrkaio%20M68S-blue.svg?style=flat-square) ![EZPRO Mrkaio M68S Plus](https://img.shields.io/badge/EZPRO%20Mrkaio%20M68S%20Plus-blue.svg?style=flat-square) ![DG TN3568](https://img.shields.io/badge/DG%20TN3568-blue.svg?style=flat-square) ![YIJIAHE JM10](https://img.shields.io/badge/YIJIAHE%20JM10-blue.svg?style=flat-square) ![Orange Pi 5 Plus](https://img.shields.io/badge/Orange%20Pi%205%20Plus-blue.svg?style=flat-square)
+![支持设备](https://img.shields.io/badge/支持设备:-blueviolet.svg?style=flat-square) ![RK35XX-CYBER3588 AIB](https://img.shields.io/badge/RK35XX--CYBER3588%20AIB-blue.svg?style=flat-square)
 
-## 默认配置
+> 基于 [iStoreOS](https://github.com/istoreos/istoreos) 的专用固件，专门针对 Rockchip RK3588 CYBER3588 AIB 开发板优化构建。提供稳定、高性能的网络与NAS解决方案。
 
-- IP: `http://192.168.100.1` or `http://iStoreOS.lan/`
-- 用户名: `root`
-- 密码: `password`
-- 如果设备只有一个网口，则此网口就是 `LAN` , 如果大于一个网口, 默认第一个网口是 `WAN` 口, 其它都是 `LAN`
-- 如果要修改 `LAN` 口 `IP` , 首页有个内网设置，或者用命令 `quickstart` 修改
-- 北京时间每天 `0:00` 定时编译, `Release` 中只保留不同架构的最新版本
-- 历史版本在 `Actions` 中选择一个已经运行完成且成功的 `workflow` 在页面底部可以看到 `Artifacts`, `Artifacts` 需要登录 Github 才能下载
-- 请把要加入的插件配置项填写在仓库 “configfiles/config_data.txt” 文件里面，假如你直接填写到 “rk35xx/.config” 文件里面绝对会丢你新加的配置项，因为每天会定时执行同步文件工作流会自动更新.config为istoreos官方最新的配置文件。
-- 自行定制时需要注意这几点：假如你禁用了 “Sync Files” 工作流的话，那插件配置项就要填写到 “rk35xx/.config” 文件里面才行，反之你没禁用 “Sync Files” 工作流的话，那插件配置项就要填写到 “configfiles/config_data.txt” 文件里面才行。
-- 使用此仓库必须设置机密token，Actions云编译固件时需要用到，其他人无法看到的（通常在仓库设置里面，严禁在仓库可视代码中填写，否则后果自负），机密键名为 `ACCESS_TOKEN`
+## 📋 项目概述
 
-## 支持架构
+**项目背景**: 这是一个基于OpenWrt的定制固件项目，专门为Rockchip RK3588芯片的CYBER3588 AIB开发板提供iStoreOS固件。
 
-### RK33xx 架构
+**目标用户**: 
+- 网络设备开发者
+- 嵌入式系统爱好者  
+- 固件定制者
+- RK3588设备用户
 
-| 设备       | 包名称                                                                    |
-| ---------- | ------------------------------------------------------------------------- |
-| R2S        | istoreos-rockchip-armv8-friendlyarm_nanopi-r2s-squashfs-sysupgrade.img.gz |
-| R4S        | istoreos-rockchip-armv8-friendlyarm_nanopi-r4s-squashfs-sysupgrade.img.gz |
-| R4SE       | istoreos-rockchip-armv8-friendlyarm_nanopi-r4se-squashfs-sysupgrade.img.gz |
-| ROCK-PI-4A | istoreos-rockchip-armv8-radxa_rock-pi-squashfs-sysupgrade.img.gz  |
-| ROCKPRO64  | istoreos-rockchip-armv8-pine64_rockpro64-squashfs-sysupgrade.img.gz  |
+**核心特性**:
+- 🚀 专门针对RK3588芯片优化
+- 🔄 GitHub Actions自动化编译
+- 📦 预配置常用插件和服务
+- 🌐 支持路由器和NAS双重功能
+- 💾 集成iStore应用商店
+
+## ⚙️ 技术架构
+
+### 系统架构
+- **基础系统**: OpenWrt + iStoreOS
+- **目标芯片**: Rockchip RK3588 
+- **构建平台**: GitHub Actions
+- **文件系统**: SquashFS
+- **架构**: ARM64 (aarch64)
+
+### 自动化构建流程
+```
+graph TB
+    A[代码提交] --> B[触发GitHub Actions]
+    B --> C[同步官方配置]
+    C --> D[应用自定义配置]
+    D --> E[编译固件]
+    E --> F[发布Release]
+    F --> G[固件下载]
+```
+
+### 目录结构
+```
+Actions-iStoreOS-RK35XX/
+├── .github/workflows/     # GitHub Actions工作流
+│   ├── build-istoreos.yml # 主要编译流程
+│   └── sync-files.yml     # 配置同步流程
+├── configfiles/           # 配置文件目录
+│   ├── config_data.txt    # 设备及插件配置
+│   ├── coremark/          # 性能测试工具
+│   ├── etc/               # 系统配置文件
+│   └── ubus_Makefile      # ubus更新包
+├── depends/               # 构建依赖
+│   └── ubuntu-22.04       # Ubuntu依赖包列表
+├── rk35xx/                # RK35XX设备配置
+│   ├── .config            # OpenWrt编译配置
+│   └── feeds.conf         # 软件源配置
+├── diy-part1.sh           # 构建前置脚本
+├── diy-part2.sh           # 构建定制脚本
+└── README.md              # 项目说明文档
+```
+
+## 🟢 默认配置
+
+### 网络访问
+- **管理地址**: `http://192.168.199.1` 或 `http://iStoreOS.lan/`
+- **默认用户名**: `root`
+- **默认密码**: `password`
+
+### 网口配置
+- **单网口设备**: 默认为`LAN`口，旁路由模式
+- **多网口设备**: 第一个网口为`WAN`口，其他为`LAN`口
+- **IP修改**: 可通过首页内网设置或命令 `quickstart` 修改
+
+### 自动化特性
+- **定时编译**: 北京时间每天 `0:00` 自动编译
+- **版本管理**: `Release` 中保留最新版本，历史版本在 `Actions` 中获取
+- **下载要求**: 历史版本需登录 GitHub 才能下载 Artifacts
+
+## 🛠️ 使用指南
+
+### 快速开始
+
+1. **Fork 本仓库**
+   ```bash
+   # 点击 GitHub 页面右上角的 Fork 按钮
+   ```
+
+2. **设置 GitHub Secrets**
+   - 进入仓库设置: `Settings` -> `Secrets and variables` -> `Actions`
+   - 点击 `New repository secret`
+   - Name: `ACCESS_TOKEN`
+   - Value: 你的 GitHub Personal Access Token
+   
+   **获取 Token 方式**:
+   - GitHub Settings -> Developer settings -> Personal access tokens -> Tokens (classic)
+   - Generate new token -> 选择适当的权限 (repo, workflow)
+
+3. **启动编译**
+   - 进入 Actions 页面
+   - 选择 "Build iStore OS RK35XX CYBER3588 AIB" 工作流
+   - 点击 "Run workflow" 手动触发
+   - 或等待每日定时编译
+
+### 插件定制
+
+#### 重要提示
+📝 **请将要添加的插件配置填写在 `configfiles/config_data.txt` 文件中**
+
+- ✅ **正确做法**: 修改 `configfiles/config_data.txt`
+- ❌ **错误做法**: 直接修改 `rk35xx/.config`（会被同步覆盖）
+
+**特殊情况**: 如果禁用了 "Sync Files" 工作流，则可以直接修改 `rk35xx/.config`
+
+#### 配置示例
+
+在 `configfiles/config_data.txt` 中添加插件：
+
+```bash
+# 添加新插件
+CONFIG_PACKAGE_luci-app-example=y
+CONFIG_PACKAGE_luci-i18n-example-zh-cn=y
+
+# 禁用不需要的功能
+# CONFIG_PACKAGE_unwanted-package is not set
+```
+
+### 已集成插件
+
+本固件默认集成以下功能模块：
+
+- 💾 **存储管理**: iStore应用商店、文件浏览器
+- 📶 **网络功能**: 滚动限速(EQoS+)、USB打印机支持（⚠️ WiFi功能已禁用）
+- 📱 **移动网络**: 支持各种PCIe 4G/5G模块、短信功能
+- 📊 **系统监控**: CPU性能测试、硬盘休眠管理
+- 🔧 **网络服务**: Nginx、DDNS、数据备份
+- 🌐 **DNS解析**: mosdns高性能DNS解析器、广告过滤
+
+**📝 重要说明**: 此版本已移除所有WiFi相关模块以节省固件空间和资源，仅支持有线网络连接。
+
+### 性能优化
+
+- **RK3588专用优化**: 针对RK3588芯片特性进行内核调优
+- **内存管理**: 启用大页内存支持，提升系统性能
+- **网络优化**: 预配置网络加速和流量控制
+- **存储优化**: 支持Btrfs文件系统和Docker容器
+
+## 🎯 支持架构
 
 ### RK35xx 架构
 
 | 设备           | 包名称                                                                   |
 | -------------- | ------------------------------------------------------------------------ |
-| H66K/H68K/H69K | istoreos-rockchip-rk35xx-hinlink_opc-h6xk-squashfs-combined.img.gz       |
-| H88K           | istoreos-rockchip-rk35xx-hinlink_h88k-squashfs-combined.img.gz           |
-| NANOPI-R5S     | istoreos-rockchip-rk35xx-friendlyarm_nanopi-r5s-squashfs-combined.img.gz |
-| NANOPI-R6S     | istoreos-rockchip-rk35xx-friendlyarm_nanopi-r6s-squashfs-combined.img.gz |
-| R66S/R68S      | istoreos-rockchip-rk35xx-fastrhino_r6xs-squashfs-combined.img.gz         |
-| STATION-P2     | istoreos-rockchip-rk35xx-firefly_station-p2-squashfs-combined.img.gz     |
-| T68M     | istoreos-rockchip-rk35xx-lyt_t68m-squashfs-combined.img.gz     |
-| JIANPIAN-TVBOX     | istoreos-rockchip-rk35xx-jp_tvbox-squashfs-sysupgrade.img.gz     |
-| PANTHER-X2     | istoreos-rockchip-rk35xx-panther_x2-squashfs-sysupgrade.img.gz     |
-| DG-NAS-LITE/IDO3568-CM4 | istoreos-rockchip-rk35xx-dg_nas-lite-squashfs-sysupgrade.img.gz     |
-| EZPRO-Mrkaio-M68S     | istoreos-rockchip-rk35xx-ezpro_mrkaio-m68s-squashfs-sysupgrade.img.gz     |
-| EZPRO-Mrkaio-M68S-Plus     | istoreos-rockchip-rk35xx-ezpro_mrkaio-m68s-plus-squashfs-sysupgrade.img.gz     |
-| DG-TN3568     | istoreos-rockchip-rk35xx-dg_tn3568-squashfs-sysupgrade.img.gz     |
-| YIJIAHE-JM10     | istoreos-rockchip-rk35xx-yijiahe_jm10-squashfs-sysupgrade.img.gz     |
-| Orange-Pi-5-Plus     | istoreos-rockchip-rk35xx-xunlong_orangepi-5-plus-squashfs-sysupgrade.img.gz     |
+| RK35XX-CYBER3588-AIB     | istoreos-rockchip-rk35xx-cyber3588_aib-squashfs-sysupgrade.img.gz     |
 
-### x86 架构
+## ⚠️ 注意事项
 
-| 启动       | 包名称                                              |
-| ---------- | --------------------------------------------------- |
-| X86-64     | istoreos-x86-64-generic-squashfs-combined.img.gz    |
-| X86-64-EFI | storeos-x86-64-generic-squashfs-combined-efi.img.gz |
+### 安全要求
+- **必须设置 GitHub Secrets**: `ACCESS_TOKEN` 用于Actions云编译
+- **严禁明文存储**: 禁止在可视代码中填写敏感信息
 
-## 鸣谢
+### 工作流配置
+- **插件配置同步**: 每天定时执行同步文件工作流会自动更新官方配置
+- **配置优先级**: `configfiles/config_data.txt` > `rk35xx/.config`
 
-- [istoreos](https://github.com/istoreos/istoreos)
-- [P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)
-- [Microsoft Azure](https://azure.microsoft.com)
-- [GitHub Actions](https://github.com/features/actions)
-- [OpenWrt](https://github.com/openwrt/openwrt)
-- [Lean&#39;s OpenWrt](https://github.com/coolsnowwolf/lede)
-- [tmate](https://github.com/tmate-io/tmate)
-- [mxschmitt/action-tmate](https://github.com/mxschmitt/action-tmate)
-- [csexton/debugger-action](https://github.com/csexton/debugger-action)
-- [Cowtransfer](https://cowtransfer.com)
-- [WeTransfer](https://wetransfer.com/)
-- [Mikubill/transfer](https://github.com/Mikubill/transfer)
-- [softprops/action-gh-release](https://github.com/softprops/action-gh-release)
-- [ActionsRML/delete-workflow-runs](https://github.com/ActionsRML/delete-workflow-runs)
-- [dev-drprasad/delete-older-releases](https://github.com/dev-drprasad/delete-older-releases)
-- [peter-evans/repository-dispatch](https://github.com/peter-evans/repository-dispatch)
-- [draco-china/istoreos-actions](https://github.com/draco-china/istoreos-actions)
+### 已知限制
+- Artifacts需要登录GitHub下载
+- 固件构建依赖GitHub Actions环境
+- 每天定时编译仅保留最新版本
 
-## 捐赠
-- 如果你觉得此系统好用的话，请我喝一杯82年的凉白开吧，感谢！
+## 🚀 高级用法
 
--支付宝-
-# <img src="https://jihulab.com/xiaomeng9597/webfiles/-/raw/main/zfb.jpg?inline=true" alt="支付宝收款码" width="200" />
+### 本地开发环境
 
--微信-
-# <img src="https://jihulab.com/xiaomeng9597/webfiles/-/raw/main/weixin.jpg?inline=true" alt="微信收款码" width="200" />
+如需本地开发，请准备以下环境：
+
+```bash
+# Ubuntu 22.04 推荐依赖包
+sudo apt update
+sudo apt install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2 python3.6 python3 python3-pyelftools libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+```
+
+### 构建脚本说明
+
+- **diy-part1.sh**: 构建前置处理，配置软件源和版本信息
+- **diy-part2.sh**: 构建定制化处理，应用补丁和优化配置
+
+### 故障排除
+
+#### 编译失败
+1. 检查 `ACCESS_TOKEN` 是否正确设置
+2. 查看 Actions 日志确定具体错误
+3. 确认依赖包版本兼容性
+
+#### 配置丢失
+1. 确认配置写入 `configfiles/config_data.txt`
+2. 检查 "Sync Files" 工作流是否启用
+3. 验证配置语法正确性
+
+## 🙏 鸣谢
+
+- [istoreos](https://github.com/istoreos/istoreos) - 上游iStoreOS项目
+- [P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt) - GitHub Actions模板
+- [OpenWrt](https://github.com/openwrt/openwrt) - 基础固件框架
+- [GitHub Actions](https://github.com/features/actions) - 自动化构建平台
+- [kenzok8/small-package](https://github.com/kenzok8/small-package) - 优秀的OpenWrt软件包集合
+- 所有贡献者和使用者
+
+## 📜 开源协议
+
+本项目基于 MIT 协议开源，详见 [LICENSE](LICENSE) 文件。
+
+## 💝 支持项目
+
+如果这个项目对你有帮助，欢迎：
+
+- ⭐ 给项目点个 Star
+- 🐛 报告问题和建议
+- 🔧 提交代码改进
+- 📢 推荐给其他人使用
+
+---
+
+**免责声明**: 本项目仅供学习交流使用，使用过程中产生的任何问题由使用者自行承担。

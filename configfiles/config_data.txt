@@ -1,86 +1,95 @@
-# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_mangopi_m28k is not set
-# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_nlnet_xgp is not set
-# CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_armsom_sige1 is not set
+#=============================================================================
+# iStoreOS RK35XX CYBER3588-AIB Device Configuration
+# 优化配置文件格式 - 2025.09.15
+#=============================================================================
 
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_easepi_ars4=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_fastrhino_r6xs=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_firefly_station-p2=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_friendlyarm_nanopi-r5s=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_friendlyarm_nanopi-r6s=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_hinlink_h88k=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_hinlink_opc-h6xk=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_hlink_h28k=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_idiskk_h1=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_lyt_t68m=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_yyy_h1=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_jp_tvbox=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_panther_x2=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_dg_nas-lite=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_ezpro_mrkaio-m68s=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_ezpro_mrkaio-m68s-plus=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_dg_tn3568=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_yijiahe_jm10=y
-CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_xunlong_orangepi-5-plus=y
+# 目标设备配置
 CONFIG_TARGET_DEVICE_rockchip_rk35xx_DEVICE_cyber3588_aib=y
 
-CONFIG_PACKAGE_brcmfmac-firmware-panther-x2=y
-CONFIG_PACKAGE_brcmfmac-firmware-jp-tvbox=y
-CONFIG_PACKAGE_rkwifi-firmware=y
-CONFIG_PACKAGE_rkwifi-firmware-ap6255=y
-CONFIG_PACKAGE_rkwifi-firmware-ap6256=y
-CONFIG_PACKAGE_rkwifi-firmware-ap6275p=y
-CONFIG_PACKAGE_rkwifi-firmware-ap6275s=y
-CONFIG_PACKAGE_rkwifi-firmware-ap6398s=y
-CONFIG_PACKAGE_kmod-rkwifi-bcmdhd-pcie=y
-CONFIG_PACKAGE_kmod-nft-tproxy=y
-CONFIG_PACKAGE_kmod-dsa=y
-CONFIG_PACKAGE_kmod-dsa-mv88e6xxx=y
-CONFIG_PACKAGE_kmod-dsa-tag-dsa=y
-CONFIG_PACKAGE_kmod-phy-marvell=y
-
+#-----------------------------------------------------------------------------
+# 🖨️ USB打印机支持
+#-----------------------------------------------------------------------------
 CONFIG_PACKAGE_kmod-usb-printer=y
 CONFIG_PACKAGE_luci-app-usb-printer=y
 CONFIG_PACKAGE_luci-i18n-usb-printer-zh-cn=y
 
+#-----------------------------------------------------------------------------
+# 💾 硬盘休眠管理
+#-----------------------------------------------------------------------------
 CONFIG_PACKAGE_hd-idle=y
 CONFIG_PACKAGE_luci-app-hd-idle=y
 CONFIG_PACKAGE_luci-i18n-hd-idle-zh-cn=y
 
+#-----------------------------------------------------------------------------
+# 📁 文件浏览器
+#-----------------------------------------------------------------------------
 CONFIG_PACKAGE_luci-app-filebrowser=y
 CONFIG_PACKAGE_luci-i18n-filebrowser-zh-cn=y
 
-CONFIG_PACKAGE_sendat=y
-CONFIG_PACKAGE_sms-tool=y
-CONFIG_PACKAGE_meig-cm=y
-CONFIG_PACKAGE_quectel-CM-5G=y
-CONFIG_PACKAGE_kmod-pcie_mhi=y
-CONFIG_PACKAGE_kmod-gobinet=y
-CONFIG_PACKAGE_kmod-qmi_wwan_q=y
-CONFIG_PACKAGE_kmod-qmi_wwan_m=y
-CONFIG_PACKAGE_luci-app-modem=y
-CONFIG_PACKAGE_luci-i18n-modem-zh-cn=y
-CONFIG_PACKAGE_luci-app-sms-tool=y
+#-----------------------------------------------------------------------------
+# 📱 PCIe蜂窝网络支持 (仅限PCIe接口，不支持USB)
+#-----------------------------------------------------------------------------
+# 内核驱动模块
+CONFIG_PACKAGE_kmod-pcie_mhi=y                         # PCIe MHI协议栈
+CONFIG_PACKAGE_kmod-gobinet=y                          # GobiNet专用驱动
+CONFIG_PACKAGE_kmod-qmi_wwan_q=y                       # 移远定制QMI驱动
+CONFIG_PACKAGE_kmod-qmi_wwan_m=y                       # 美格定制QMI驱动
 
-CONFIG_PACKAGE_nginx=y
-CONFIG_PACKAGE_nginx-ssl=y
-CONFIG_PACKAGE_nginx-ssl-util=y
-CONFIG_PACKAGE_nginx-util=y
-CONFIG_PACKAGE_nginx-mod-luci=y
-CONFIG_PACKAGE_luci-nginx=y
+# 应用层工具
+CONFIG_PACKAGE_sendat=y                                # AT指令发送工具
+CONFIG_PACKAGE_sms-tool=y                              # 短信收发工具
+CONFIG_PACKAGE_meig-cm=y                               # 美格模块连接管理器
+CONFIG_PACKAGE_quectel-CM-5G=y                         # 移远5G模块连接管理器
 
-CONFIG_PACKAGE_jq=y
-CONFIG_PACKAGE_ntpdate=y
-CONFIG_PACKAGE_hdparm=y
-CONFIG_PACKAGE_stress=y
-CONFIG_PACKAGE_coreutils=y
-CONFIG_PACKAGE_coreutils-base64=y
-CONFIG_PACKAGE_coreutils-stat=y
-CONFIG_PACKAGE_coreutils-stty=y
-CONFIG_PACKAGE_coreutils-nohup=y
-CONFIG_PACKAGE_default-settings=y
-CONFIG_PACKAGE_luci-app-store=y
-CONFIG_PACKAGE_quickstart=y
-CONFIG_PACKAGE_luci-app-quickstart=y
-CONFIG_PACKAGE_luci-i18n-quickstart-zh-cn=y
-CONFIG_PACKAGE_luci-app-eqosplus=y
-CONFIG_PACKAGE_luci-i18n-eqosplus-zh-cn=y
+# Web管理界面
+CONFIG_PACKAGE_luci-app-modem=y                        # 调制解调器管理界面
+CONFIG_PACKAGE_luci-i18n-modem-zh-cn=y                 # 中文语言包
+CONFIG_PACKAGE_luci-app-sms-tool=y                     # 短信管理界面
+
+#-----------------------------------------------------------------------------
+# 🌐 Nginx Web服务器
+#-----------------------------------------------------------------------------
+CONFIG_PACKAGE_nginx=y                                 # Nginx主程序
+CONFIG_PACKAGE_nginx-ssl=y                             # SSL/TLS支持
+CONFIG_PACKAGE_nginx-ssl-util=y                        # SSL工具
+CONFIG_PACKAGE_nginx-util=y                            # 基础工具
+CONFIG_PACKAGE_nginx-mod-luci=y                        # LuCI集成模块
+CONFIG_PACKAGE_luci-nginx=y                            # Nginx管理界面
+
+#-----------------------------------------------------------------------------
+# 🛠️ 系统工具与核心组件
+#-----------------------------------------------------------------------------
+# 基础工具
+CONFIG_PACKAGE_jq=y                                    # JSON处理工具
+CONFIG_PACKAGE_ntpdate=y                               # 时间同步工具
+CONFIG_PACKAGE_hdparm=y                                # 硬盘参数工具
+CONFIG_PACKAGE_stress=y                                # 系统压力测试
+
+# CoreUtils工具集
+CONFIG_PACKAGE_coreutils=y                             # 核心工具包
+CONFIG_PACKAGE_coreutils-base64=y                      # Base64编码工具
+CONFIG_PACKAGE_coreutils-stat=y                        # 文件状态工具
+CONFIG_PACKAGE_coreutils-stty=y                        # 终端控制工具
+CONFIG_PACKAGE_coreutils-nohup=y                       # 后台运行工具
+
+#-----------------------------------------------------------------------------
+# 🏪 iStoreOS核心组件
+#-----------------------------------------------------------------------------
+CONFIG_PACKAGE_default-settings=y                      # 默认设置
+CONFIG_PACKAGE_luci-app-store=y                        # iStore应用商店
+CONFIG_PACKAGE_quickstart=y                            # 快速设置程序
+CONFIG_PACKAGE_luci-app-quickstart=y                   # 快速设置界面
+CONFIG_PACKAGE_luci-i18n-quickstart-zh-cn=y            # 快速设置中文包
+
+#-----------------------------------------------------------------------------
+# ⚡ 网络优化与QoS
+#-----------------------------------------------------------------------------
+CONFIG_PACKAGE_luci-app-eqosplus=y                     # 定时限速插件
+CONFIG_PACKAGE_luci-i18n-eqosplus-zh-cn=y              # 中文语言包
+
+#-----------------------------------------------------------------------------
+# 🌐 DNS解析器增强 (mosdns)
+#-----------------------------------------------------------------------------
+CONFIG_PACKAGE_mosdns=y                                # mosdns高性能DNS解析器
+CONFIG_PACKAGE_luci-app-mosdns=y                       # mosdns Web管理界面
+CONFIG_PACKAGE_luci-i18n-mosdns-zh-cn=y                # mosdns中文语言包

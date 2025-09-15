@@ -1,85 +1,87 @@
 #!/bin/bash
-#===============================================
-# Description: DIY script
-# File name: diy-script.sh
-# Lisence: MIT
-# Author: P3TERX
-# Blog: https://p3terx.com
-#===============================================
+#=============================================================================
+# iStoreOS RK35XX 构建定制脚本 (diy-part2.sh)
+# 描述: 构建过程中的定制化配置和系统优化
+# 作者: P3TERX (Modified by xiaomeng9597)
+# 博客: https://p3terx.com
+# 许可证: MIT
+# 更新时间: 2025-09-15
+#=============================================================================
 
-# enable rk3568 model adc keys
-cp -f $GITHUB_WORKSPACE/configfiles/adc-keys.txt adc-keys.txt
-! grep -q 'adc-keys {' package/boot/uboot-rk35xx/src/arch/arm/dts/rk3568-easepi.dts && sed -i '/\"rockchip,rk3568\";/r adc-keys.txt' package/boot/uboot-rk35xx/src/arch/arm/dts/rk3568-easepi.dts
+set -e  # 脚本出错时立即退出
 
-# update ubus git HEAD
-cp -f $GITHUB_WORKSPACE/configfiles/ubus_Makefile package/system/ubus/Makefile
+#-----------------------------------------------------------------------------
+# 🔄 更新ubus组件到最新版本
+#-----------------------------------------------------------------------------
+echo "🔄 更新ubus组件..."
+cp -f "$GITHUB_WORKSPACE/configfiles/ubus_Makefile" package/system/ubus/Makefile
+echo "✅ ubus组件已更新"
 
-# 近期istoreos网站文件服务器不稳定，临时增加一个自定义下载网址
+#-----------------------------------------------------------------------------
+# 🔗 修复下载镜像服务器问题
+#-----------------------------------------------------------------------------
+echo "🔗 添加备用下载镜像..."
 sed -i "s/push @mirrors, 'https:\/\/mirror2.openwrt.org\/sources';/&\\npush @mirrors, 'https:\/\/github.com\/xiaomeng9597\/files\/releases\/download\/iStoreosFile';/g" scripts/download.pl
+echo "✅ 备用下载镜像已添加"
 
-
-# 修改内核配置文件
+#-----------------------------------------------------------------------------
+# 🛠️ RK3588内核优化配置
+#-----------------------------------------------------------------------------
+echo "🛠️ 优化RK3588内核配置..."
+# 移除有问题的RGA2配置
 sed -i "/.*CONFIG_ROCKCHIP_RGA2.*/d" target/linux/rockchip/rk35xx/config-5.10
-# sed -i "/# CONFIG_ROCKCHIP_RGA2 is not set/d" target/linux/rockchip/rk35xx/config-5.10
-# sed -i "/CONFIG_ROCKCHIP_RGA2_DEBUGGER=y/d" target/linux/rockchip/rk35xx/config-5.10
-# sed -i "/CONFIG_ROCKCHIP_RGA2_DEBUG_FS=y/d" target/linux/rockchip/rk35xx/config-5.10
-# sed -i "/CONFIG_ROCKCHIP_RGA2_PROC_FS=y/d" target/linux/rockchip/rk35xx/config-5.10
+echo "✅ RK3588内核配置已优化"
 
+#-----------------------------------------------------------------------------
+# 📶 WiFi功能禁用说明
+#-----------------------------------------------------------------------------
+echo "📶 WiFi功能状态: 已完全禁用"
+echo "   - 原因: 设备无WiFi模块"
+echo "   - 效果: 节省固件空间和系统资源"
+echo "   - 配置: 所有WiFi相关模块已从配置中移除"
 
+#-----------------------------------------------------------------------------
+# 🌐 网络配置优化
+#-----------------------------------------------------------------------------
+echo "🌐 配置网络参数..."
+# 修改默认LAN IP地址为192.168.199.1
+sed -i 's/192.168.1.1/192.168.199.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.199.1/g' package/base-files/luci2/bin/config_generate 2>/dev/null || true
+echo "✅ 默认LAN IP地址: 192.168.199.1"
 
-
-# 替换dts文件
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3566-jp-tvbox.dts target/linux/rockchip/dts/rk3568/rk3566-jp-tvbox.dts
-
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3566-panther-x2.dts target/linux/rockchip/dts/rk3568/rk3566-panther-x2.dts
-
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-dg-nas-lite-core.dtsi target/linux/rockchip/dts/rk3568/rk3568-dg-nas-lite-core.dtsi
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-dg-nas-lite.dts target/linux/rockchip/dts/rk3568/rk3568-dg-nas-lite.dts
-
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-mrkaio-m68s-core.dtsi target/linux/rockchip/dts/rk3568/rk3568-mrkaio-m68s-core.dtsi
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-mrkaio-m68s.dts target/linux/rockchip/dts/rk3568/rk3568-mrkaio-m68s.dts
-cp -f $GITHUB_WORKSPACE/configfiles/dts/rk3568-mrkaio-m68s-plus.dts target/linux/rockchip/dts/rk3568/rk3568-mrkaio-m68s-plus.dts
-
-
-
-# 修改uhttpd配置文件，启用nginx
-# sed -i "/.*uhttpd.*/d" .config
-# sed -i '/.*\/etc\/init.d.*/d' package/network/services/uhttpd/Makefile
-# sed -i '/.*.\/files\/uhttpd.init.*/d' package/network/services/uhttpd/Makefile
+# 修改uhttpd配置，启用nginx
 sed -i "s/:80/:81/g" package/network/services/uhttpd/files/uhttpd.config
 sed -i "s/:443/:4443/g" package/network/services/uhttpd/files/uhttpd.config
-cp -a $GITHUB_WORKSPACE/configfiles/etc/* package/base-files/files/etc/
-# ls package/base-files/files/etc/
+echo "✅ uhttpd端口已调整: HTTP 81, HTTPS 4443"
 
+# 复制系统配置文件
+cp -a "$GITHUB_WORKSPACE/configfiles/etc/"* package/base-files/files/etc/
+echo "✅ 系统配置文件已复制"
 
-
-
-# 轮询检查ubus服务是否崩溃，崩溃就重启ubus服务，只针对rk3566机型，如黑豹X2和荐片TV盒子。
-cp -f $GITHUB_WORKSPACE/configfiles/httpubus package/base-files/files/etc/init.d/httpubus
-cp -f $GITHUB_WORKSPACE/configfiles/ubus-examine.sh package/base-files/files/bin/ubus-examine.sh
-chmod 755 package/base-files/files/etc/init.d/httpubus
-chmod 755 package/base-files/files/bin/ubus-examine.sh
-
-
-
-# 集成黑豹X2和荐片TV盒子WiFi驱动，默认不启用WiFi
-cp -a $GITHUB_WORKSPACE/configfiles/packages/* package/firmware/
-cp -f $GITHUB_WORKSPACE/configfiles/opwifi package/base-files/files/etc/init.d/opwifi
-chmod 755 package/base-files/files/etc/init.d/opwifi
-# sed -i "s/wireless.radio\${devidx}.disabled=1/wireless.radio\${devidx}.disabled=0/g" package/kernel/mac80211/files/lib/wifi/mac80211.sh
-
-
-
-# 集成CPU性能跑分脚本
-cp -f $GITHUB_WORKSPACE/configfiles/coremark/coremark-arm64 package/base-files/files/bin/coremark-arm64
-cp -f $GITHUB_WORKSPACE/configfiles/coremark/coremark-arm64.sh package/base-files/files/bin/coremark.sh
+#-----------------------------------------------------------------------------
+# 📊 集成CPU性能跑分脚本
+#-----------------------------------------------------------------------------
+echo "📊 集成性能测试工具..."
+cp -f "$GITHUB_WORKSPACE/configfiles/coremark/coremark-arm64" package/base-files/files/bin/coremark-arm64
+cp -f "$GITHUB_WORKSPACE/configfiles/coremark/coremark-arm64.sh" package/base-files/files/bin/coremark.sh
 chmod 755 package/base-files/files/bin/coremark-arm64
 chmod 755 package/base-files/files/bin/coremark.sh
+echo "✅ CoreMark性能测试工具已集成"
 
+#-----------------------------------------------------------------------------
+# 📦 添加第三方软件包
+#-----------------------------------------------------------------------------
+echo "📦 添加第三方软件包..."
 
-# iStoreOS-settings
+# iStoreOS默认设置
+echo "  - 添加iStoreOS默认设置..."
 git clone --depth=1 -b main https://github.com/xiaomeng9597/istoreos-settings package/default-settings
-
+echo "✅ iStoreOS默认设置已添加"
 
 # 定时限速插件
+echo "  - 添加定时限速插件..."
 git clone --depth=1 https://github.com/sirpdboy/luci-app-eqosplus package/luci-app-eqosplus
+echo "✅ 定时限速插件已添加"
+
+echo "🎉 diy-part2.sh 执行完成"
+echo "🛠️ 系统已优化为仅支持RK35XX CYBER3588-AIB设备"
